@@ -25,27 +25,13 @@ router.get('/users', function(req, res, next) {
   })
 });
 
-//old userID page
-// router.get('/users/:id', function(req, res, next) {
-//   //res.send('got to GET /wiki/');
-//   var userId = req.params.id;
-//   var pageTitle = "Users Page"
-//   Page.findAll({
-//   	where: {authorId: userId}
-//   }).then(function(pages) {
-//   	res.render('index', {users: pages, pageTitle: pageTitle})
-//   })
-// });
 
 router.get('/add', function(req, res, next) {
-  //res.send('got to GET /wiki/add');
   res.render('addpage');
-  //res.redirect('/');
 });
 
 
 router.get('/users/:userId', function(req, res, next) {
-
   var userPromise = User.findById(req.params.userId);
   var pagesPromise = Page.findAll({
     where: {
@@ -73,7 +59,6 @@ router.post('/', function(req, res, next) {
   var name = req.body.name;
   var email = req.body.email;
   console.log(req.body);
-  //res.send('got to POST /wiki/');
   
   User.findOrCreate({
   	where: {
@@ -99,45 +84,18 @@ router.post('/', function(req, res, next) {
 	})
 	.catch(next);
 
-  	// page.save().then(function(savedPage){
-  	// 	res.redirect(savedPage.route); // virtual route
-  	// }).catch(next);
 
-  //res.redirect('/');
-  //promise.all(user.save and page.save)
 });
 
 
-// router.delete('/:urlTitle/delete', function(req, res, next) {
-//   Page.destroy({
-//   	where: {urlTitle: req.params.urlTitle}
-//   })
-// });
+router.delete('/:urlTitle/delete', function(req, res, next) {
+  Page.destroy({
+  	where: {urlTitle: req.params.urlTitle}
+  })
+});
+
 
 router.get('/:urlTitle', function (req, res, next) {
-  // Page.find({
-  // 	where: {urlTitle: req.params.urlTitle}
-  // })
-  // .then(function(foundPage){
-  // 	//res.json(foundPage);
-  // 	//console.log(foundPage.dataValues);
-  // 	//console.log(req.body)
-  // 	res.render('wikipage', {content: foundPage.content, title: foundPage.title, name: foundPage.authorName});
-  // 	//return foundPage;
-  // })
-  // .catch(next);
-
-  // // User.find({
-  // // 	where: {name: req.params.name}
-  // // })
-  // // .then(function(foundUser){
-  // // 	//res.json(foundPage);
-  // // 	console.log(foundUser.dataValues);
-  // // 	res.render('wikipage', {name: foundUser.name, email: foundUser.email});
-  // // 	//return foundPage;
-  // // })
-  // // .catch(next);
-
  	Page.findOne({
     	where: {
         	urlTitle: req.params.urlTitle
@@ -147,8 +105,6 @@ router.get('/:urlTitle', function (req, res, next) {
     	]
 	})
 	.then(function (page) {
-	    // page instance will have a .author property
-	    // as a filled in user object ({ name, email })
 	    if (page === null) {
 	        res.status(404).send();
 	    } else {
