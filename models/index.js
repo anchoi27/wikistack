@@ -6,7 +6,6 @@ var db = new Sequelize('postgres://localhost:5432/wikistack', {
 //var connection = new Sequelize('root', null, null, {dialect: postgres});
 
 
-
 var Page = db.define('page', {
     title: {
         type: Sequelize.STRING, 
@@ -47,6 +46,7 @@ Page.hook('beforeValidate', function (page) {
 });
 
 
+
 var User = db.define('user', {
     name: {
         type: Sequelize.STRING, 
@@ -59,6 +59,9 @@ var User = db.define('user', {
         allowNull: false
     }
 });
+
+Page.belongsTo(User, { as: 'author' });
+
 
 module.exports = {
   Page: Page,

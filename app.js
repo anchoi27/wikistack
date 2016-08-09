@@ -28,9 +28,9 @@ app.use('/', express.static(path.join(__dirname, 'public')));
 app.use('/wiki', wikiRouter);
 
 
-models.User.sync({})
+models.Page.sync({force: true})
 .then(function () {
-    return models.Page.sync({});
+    return models.User.sync({force: true});
 })
 .then(function () {
     app.listen(3001, function () {
@@ -40,9 +40,3 @@ models.User.sync({})
 .catch(console.error);
 
 
-
-
-
-// var server = app.listen(3001, function(){
-//  console.log('listening on port 3001');
-// });
